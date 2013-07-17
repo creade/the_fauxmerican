@@ -1,0 +1,140 @@
+.teamsHeader{
+	display: block;
+	height:190px;
+	
+	width: 320px;
+}
+.leftBlock{
+	float:left;
+}
+
+.rightBlock{
+	float:right;
+}
+.teamsRow{
+	display: block;
+}
+
+.headerTeam{
+	width:150px;
+	background-color: lightgray;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	height: 165px;
+}
+.teamHeaderText{
+	text-align: center;
+	height: 50px;
+}
+
+.schoolName{
+	font-family: "Graduate";
+	font-size: 14px;
+}
+
+.teamName{
+	font-family: "Rock Salt";
+	font-size: 14px;
+}
+
+.headerLogo {
+	 	background-color: darkgrey;
+  	border-radius: 5px;
+}
+
+#leftTeams{
+	width: 320px;
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+}
+
+#rightTeams{
+	width: 320px;
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+}
+
+.title{
+	text-align: center;
+	font-size: 48px;
+	font-family: "HelveticaNeue-CondensedBold","Helvetica",sans-serif;
+    background-color:white;
+}
+
+div.headerLogo svg{
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}
+.carousel{
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+
+      background-color: white;
+   border-radius:25px;
+}
+.map{
+}
+
+.leftNav{
+	height: 100%;
+	width: 20%;
+	float: left;
+}
+
+.logoBold {
+	font-weight: bold;
+}
+
+.logoItalics {
+	font-style: italic
+}
+
+#container{
+	 height: 125px;
+     text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
+}
+#strech {
+	width: 100%;	
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
+}
+
+.hide {
+  display: none;
+}
+.background {
+    background:
+        radial-gradient(black 15%, transparent 16%) 0 0,
+        radial-gradient(black 15%, transparent 16%) 8px 8px,
+        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+        radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color:#282828;
+    background-size:16px 16px;
+}
+
+svg g{
+ -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.overlay{
+    background-color:#ccc;
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    z-index:1000;
+}

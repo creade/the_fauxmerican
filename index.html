@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Fauxmerican Conference</title>
+    <link href="faux.css" rel='stylesheet' type='text/css'>
+    <link href="jquery.bxslider.css" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC|Graduate|Rock+Salt' rel='stylesheet' type='text/css'>
+</head>
+<body class="background">
+
+<h1 class="title">THE FAUXMERICAN CONFERENCE</h1>
+
+<div id="container">
+
+    <div id="leftTeams">
+        <div class="teamsHeader leftBlock" data-bind="foreach: teams().slice(0, 2)">
+            <div class="headerTeam leftBlock">
+                <div class="teamHeaderText schoolName" data-bind="text: name"></div>
+                <div class="headerLogo" data-bind="html: rawLogo"></div>
+                <div class="teamHeaderText teamName" data-bind="text: teamName"></div>
+            </div>
+        </div>
+        <div class="teamsHeader leftBlock" data-bind="foreach: teams().slice(2, 4)">
+            <div class="headerTeam leftBlock">
+                <div class="teamHeaderText schoolName" data-bind="text: name"></div>
+                <div class="headerLogo" data-bind="html: rawLogo"></div>
+                <div class="teamHeaderText teamName" data-bind="text: teamName"></div>
+            </div>
+        </div>
+        <div class="teamsHeader leftBlock" data-bind="foreach: teams().slice(4, 6)">
+            <div class="headerTeam leftBlock">
+                <div class="teamHeaderText schoolName" data-bind="text: name"></div>
+                <div class="headerLogo" data-bind="html: rawLogo"></div>
+                <div class="teamHeaderText teamName" data-bind="text: teamName"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="carousel">
+        <ul class="bxslider">
+            <li>
+                <div class="map"></div>
+            </li>
+            <li>
+                <h1>Something!</h1>
+            </li>
+        </ul>
+    </div>
+
+
+    <div id="rightTeams">
+        <div class="teamsHeader rightBlock" data-bind="foreach: teams().slice(6, 8)">
+            <div class="headerTeam rightBlock">
+                <div class="teamHeaderText schoolName" data-bind="text: name"></div>
+                <div class="headerLogo" data-bind="html: rawLogo"></div>
+                <div class="teamHeaderText teamName" data-bind="text: teamName"></div>
+            </div>
+        </div>
+        <div class="teamsHeader rightBlock" data-bind="foreach: teams().slice(8, 10)">
+            <div class="headerTeam rightBlock">
+                <div class="teamHeaderText schoolName" data-bind="text: name"></div>
+                <div class="headerLogo" data-bind="html: rawLogo"></div>
+                <div class="teamHeaderText teamName" data-bind="text: teamName"></div>
+            </div>
+        </div>
+        <div class="teamsHeader rightBlock" data-bind="foreach: teams().slice(10, 12)">
+            <div class="headerTeam rightBlock">
+                <div class="teamHeaderText schoolName" data-bind="text: name"></div>
+                <div class="headerLogo" data-bind="html: rawLogo"></div>
+                <div class="teamHeaderText teamName" data-bind="text: teamName"></div>
+            </div>
+        </div>
+    </div>
+    <span id="strech"></span>
+</div>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/knockout/2.2.1/knockout-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.2.2/d3.v3.min.js"></script>
+
+
+<script src="jquery.bxslider.min.js"></script>
+<script src="pickRandom.js"></script>
+<script src="topojson.v1.min.js"></script>
+<script src="index.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        FA.controllers.index().initialize();
+        $('.bxslider').bxSlider({
+            responsive:false,
+            slideWidth: $(window).width() - 680;
+        });
+    });
+</script>
+</body>
+</html>
