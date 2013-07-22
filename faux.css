@@ -31,6 +31,18 @@
 .schoolName{
 	font-family: "Graduate";
 	font-size: 14px;
+    margin-left: 3px;
+    margin-left: 3px;
+    margin-top: 3px;
+}
+.land {
+  fill: darkgrey;
+}
+
+
+.state-boundary {
+  fill: none;
+  stroke: white;
 }
 
 .teamName{
@@ -78,6 +90,7 @@ div.headerLogo svg{
    border-radius:25px;
 }
 .map{
+    background-color: #282828;
 }
 
 .leftNav{
@@ -92,6 +105,30 @@ div.headerLogo svg{
 
 .logoItalics {
 	font-style: italic
+}
+
+.newCoach {
+    height: 500px;
+    background-image:url('newCoach.jpg');
+    position:relative;
+}
+.slideTitle {
+    text-align: right;
+    float: right;
+	font-size: 35px;
+    padding-right: 5px;
+	font-family: "HelveticaNeue-CondensedBold","Helvetica",sans-serif;
+    background-color:white;
+    width:100%;
+    margin-top: 15px;
+}
+
+.slideText{
+    font-family: "HelveticaNeue-CondensedBold","Helvetica",sans-serif;
+    font-size: 30px;
+    background-color:white;
+    padding-left: 5px;
+    position:absolute; bottom:0;
 }
 
 #container{
@@ -137,4 +174,21 @@ svg g{
     top:0px;
     left:0px;
     z-index:1000;
+}
+
+.slidePadding {
+    opacity: 0;
+    height: 1px;
+}
+
+.mapTitle {
+    text-align: right;
+	font-size: 35px;
+    padding-right: 5px;
+	font-family: "HelveticaNeue-CondensedBold","Helvetica",sans-serif;
+    background-color:white;
+    float:right;
+    width:100%;
+    margin-top: 15px;
+
 }

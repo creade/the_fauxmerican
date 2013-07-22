@@ -35,7 +35,7 @@ FA.controllers.index = function () {
 
         drawMap:function () {
             viewModel.width = $(window).width() - 700;
-            viewModel.height = 540;
+            viewModel.height = 540 - 42;
 
             viewModel.projection = d3.geo.albersUsa()
                 .scale(1000)
@@ -59,12 +59,6 @@ FA.controllers.index = function () {
                     .attr("class", "land")
                     .attr("d", path);
 
-                viewModel.mapNode.insert("path", ".graticule")
-                    .datum(topojson.mesh(us, us.objects.counties, function (a, b) {
-                    return a !== b && !(a.id / 1000 ^ b.id / 1000);
-                }))
-                    .attr("class", "county-boundary")
-                    .attr("d", path);
 
                 viewModel.mapNode.insert("path", ".graticule")
                     .datum(topojson.mesh(us, us.objects.states, function (a, b) {
@@ -112,8 +106,88 @@ FA.controllers.index = function () {
 
         },
 
+        teamLogos: function () {
+            _.each(viewModel.teams(), function(team){
+            if (team.logoNames.length !== 0) {
+                d3.xml(team.logoNames + ".svg", "image/svg+xml", function (xml) {
+                    var importedNode = document.importNode(xml.documentElement, true);
+
+                    var svg = d3.select(importedNode);
+
+                    svg.attr("id", "logo" + team.id).attr("class", "logo");
+
+
+                    svg
+                        .selectAll("path")
+                        .attr("transform", "scale(.10)");
+
+
+                    svg
+                        .selectAll(".color")
+                        .attr("fill", team.teamColor);
+
+
+                    team.rawLogo(viewModel.serializer.serializeToString(importedNode));
+
+                    viewModel.readyLogos.push(team.id);
+
+                });
+
+
+            } else {
+
+                var textLogoTemplate = _.template('<svg class="logo" id="logo<%= id %>" width="150" height="50"><text font-family="<%= font %>"  text-anchor="middle" x="50%" y="50%" dy=".3em" font-size="<%= fontSize %>" class="<%= bold%><%= italics%>" fill="<%= color %>" <%= stroke %>><%= letter %></text></svg>');
+
+                var font = (Math.random() > .5) ? "Holtwood One SC" : "Graduate";
+
+                var bold = (Math.random() > .55) ? " logoBold " : "";
+
+                var italics = (Math.random() > .55) ? " logoItalics " : "";
+
+                var useTeamName = (Math.random() > .70);
+
+                var text;
+
+                if (useTeamName) {
+                    text = (Math.random() > .65) ? team.teamName : team.teamName.toUpperCase();
+                } else {
+                    text = team.logoLetter;
+                }
+
+
+                var fontSize = useTeamName ? (57.0553 + (-17.51654547 * Math.log(text.length))) : 33;
+
+                var stroke = "";
+
+
+                if (Math.random() > .33 && font !== "Graduate") {
+                    var color = (Math.random() > .5) ? "white" : "black";
+                    stroke = 'stroke="' + color + '" stroke-width="1.25"';
+                }
+
+                team.rawLogo(textLogoTemplate({
+                    id: team.id,
+                    font: font,
+                    color: team.teamColor,
+                    letter: text,
+                    stroke: stroke,
+                    bold: bold,
+                    fontSize: fontSize,
+                    italics: italics
+                }));
+
+                viewModel.readyLogos.push(team.id);
+            }
+            });
+        },
+
+
+
         generate:function () {
-            $.getJSON("data.json").success(function (data) {
+            $.when($.getJSON("data.json"), $.getJSON("first_names.json"), $.getJSON("last_names.json")).done(function (data, firstNames, lastNames) {
+                var data = data[0];
+                var firstNames = firstNames[0];
+                var lastNames = lastNames[0];
                 var numTeams = 12;
                 var places = _.pickRandom(data.places, numTeams);
                 var teamInfos = viewModel.getTeamInfos(data, numTeams);
@@ -136,10 +210,15 @@ FA.controllers.index = function () {
                     team.name += place.N;
                     team.lat = place.Lat;
                     team.lon = place.Lon;
+                    team.coach = {
+                        lastName: _.pickRandom(lastNames, 1)[0],
+                        firstName: _.pickRandom(firstNames, 1)[0]
+                    }
 
                     var teamInfo = teamInfos.pop();
 
                     team.teamName = teamInfo.N;
+                    team.logoNames = teamInfo.L;
 
                     if (team.name.indexOf("University") < 0) {
 
@@ -190,78 +269,7 @@ FA.controllers.index = function () {
                     }
 
 
-                    if (teamInfo.L.length !== 0) {
-                        d3.xml(teamInfo.L + ".svg", "image/svg+xml", function (xml) {
-//                        d3.xml("bandit.svg", "image/svg+xml", function (xml) {
-                            var importedNode = document.importNode(xml.documentElement, true);
 
-                            var svg = d3.select(importedNode);
-
-                            svg.attr("id", "logo" + team.id).attr("class", "logo");
-
-
-                                svg
-                                    .selectAll("path")
-                                    .attr("transform", "scale(.10)");
-
-
-
-                            svg
-                                .selectAll(".color")
-                                .attr("fill", team.teamColor);
-
-
-                            team.rawLogo(viewModel.serializer.serializeToString(importedNode));
-
-                            viewModel.readyLogos.push(team.id);
-
-                        });
-
-
-                    } else {
-
-                        var textLogoTemplate = _.template('<svg class="logo" id="logo<%= id %>" width="150" height="50"><text font-family="<%= font %>"  text-anchor="middle" x="50%" y="50%" dy=".3em" font-size="<%= fontSize %>" class="<%= bold%><%= italics%>" fill="<%= color %>" <%= stroke %>><%= letter %></text></svg>');
-
-                        var font = (Math.random() > .5) ? "Holtwood One SC" : "Graduate";
-
-                        var bold = (Math.random() > .55) ? " logoBold " : "";
-
-                        var italics = (Math.random() > .55) ? " logoItalics " : "";
-
-                        var useTeamName = (Math.random() > .70);
-
-                        var text;
-
-                        if (useTeamName) {
-                            text = (Math.random() > .65) ? team.teamName : team.teamName.toUpperCase();
-                        } else {
-                            text = team.logoLetter;
-                        }
-
-
-                        var fontSize = useTeamName ? (57.0553 + (-17.51654547 * Math.log(text.length))) : 33;
-
-                        var stroke = "";
-
-
-                        if (Math.random() > .33 && font !== "Graduate") {
-                            var color = (Math.random() > .5) ? "white" : "black";
-                            stroke = 'stroke="' + color + '" stroke-width="1.25"';
-                        }
-
-                        team.rawLogo(textLogoTemplate({
-                            id:team.id,
-                            font:font,
-                            color:team.teamColor,
-                            letter:text,
-                            stroke:stroke,
-                            bold:bold,
-                            fontSize:fontSize,
-                            italics:italics
-                        }));
-
-                        viewModel.readyLogos.push(team.id);
-                    }
 
 
                     return team;
@@ -273,7 +281,48 @@ FA.controllers.index = function () {
             });
         },
 
+        teamGenerationLoop:function () {
+
+
+            var done = false;
+
+            function waitForLogoRendering() {
+                setTimeout(function () {
+                    done =viewModel.teams().length === 12;
+                    if (!done) {
+                        waitForLogoRendering();
+                    } else {
+                        viewModel.newCoachTeam = _.pickRandom(viewModel.teams(), 1)[0];
+                        ko.applyBindings(viewModel);
+                    }
+
+                }, 1500)
+            }
+
+            waitForLogoRendering();
+        },
+
         logoRenderLoop:function () {
+
+
+            var done = false;
+
+            function waitForLogoRendering() {
+                setTimeout(function () {
+                    done =viewModel.teams().length === 12;
+                    if (!done) {
+                        waitForLogoRendering();
+                    } else {
+                        viewModel.teamLogos();
+                    }
+
+                }, 1500)
+            }
+
+            waitForLogoRendering();
+        },
+
+        mapLogoRenderLoop:function () {
 
 
             var done = false;
@@ -295,8 +344,6 @@ FA.controllers.index = function () {
 
         addLogos:function () {
 
-
-
             var nodes = viewModel.g.append("g")
                 .attr("class", "nodes")
                 .selectAll("g")
@@ -306,10 +353,7 @@ FA.controllers.index = function () {
                 .attr("class", "node")
                 .attr("id", function (d) {
                     return "mapLogo" + d.id;
-                })
-
-
-
+                });
 
             _.each(viewModel.readyLogos(), function (teamId) {
                 $("#logo" + teamId).children().clone().removeAttr("x").removeAttr("y").removeAttr("transform").appendTo("#mapLogo" + teamId);
@@ -361,10 +405,13 @@ FA.controllers.index = function () {
 
         viewModel.generate();
 
-        ko.applyBindings(viewModel);
+        viewModel.teamGenerationLoop();
 
 
         viewModel.logoRenderLoop();
+
+
+        viewModel.mapLogoRenderLoop();
 
 
     }
